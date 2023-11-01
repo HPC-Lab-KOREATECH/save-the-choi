@@ -1,0 +1,63 @@
+{
+  "name": "save-the-choi",
+  "version": "1.0.0",
+  "description": "Save the Choi",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && electron ./build/index.js",
+    "deploy": "npm run build && electron-builder --win portable"
+  },
+  "repository": "https://github.com/refracta/save-the-choi",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo",
+    "typescript"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "electron": "^24.8.2",
+    "electron-builder": "^24.6.4",
+    "eslint": "^7.32.0",
+    "typescript": "^4.8.3"
+  },
+  "main": "build/index.js",
+  "build": {
+    "productName": "SaveTheChoi",
+    "appId": "com.refracta.stc",
+    "asar": true,
+    "protocols": {
+      "name": "saveTheChoi",
+      "schemes": [
+        "saveTheChoi"
+      ]
+    },
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "./resources/stc256.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "directories": {
+      "buildResources": "./resources/installer/",
+      "output": "./dist/",
+      "app": "."
+    },
+    "extraResources": [
+      {
+        "from": "resources",
+        "to": ".",
+        "filter": ["**/*"]
+      }
+    ]
+  }
+}

@@ -2,7 +2,7 @@
 $dockerURL = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
 $imageURL = "https://l.abstr.net/stcimage"
 $stcURL = "https://l.abstr.net/stcbuildwindows"
-$jsonObject = @{
+$dockerConfig = @{
     imageName = "stc-image"
     containerName = "stc-container"
     # (OPTIONAL)
@@ -80,6 +80,10 @@ $Shortcut.Save()
 Write-Host "Downloading container image from $imageURL"
 Invoke-WebRequest -Uri $imageURL -OutFile "$folderPath\image.tar"
 Write-Host "Download done!"
+
+# DOCKER CONFIG
+$dockerConfigJson = $dockerConfig | ConvertTo-Json -Depth 10
+$dockerConfigJson | Out-File -FilePath 'dockerConfig.json'
 
 # REBOOT
 while ($true) {

@@ -6,7 +6,7 @@
     "build": "tsc",
     "start": "npm run build && electron ./build/index.js",
     "deploy": "npm run build && electron-builder --win portable",
-    "rebuild": "electron-rebuild -f -w desktop-idle",
+    "rebuild": "electron-rebuild -f -w desktop-idle"
   },
   "repository": "https://github.com/refracta/save-the-choi",
   "keywords": [

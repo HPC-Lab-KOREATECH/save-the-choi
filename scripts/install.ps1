@@ -1,12 +1,12 @@
 # CONFIG
 $dockerURL = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
-$imageURL = "https://private_raw.abstr.net/image.tar"
-$stcURL = "http://218.150.183.4:8080/SaveTheChoi%201.0.0.exe"
+$imageURL = "https://l.abstr.net/stc-image"
+$stcURL = "https://l.abstr.net/stc-build-windows"
 $jsonObject = @{
-    imageName = "target"
-    containerName = "target"
+    imageName = "stc-image"
+    containerName = "stc-container"
     # (OPTIONAL)
-    # containerCreationCommand = "docker create -it --entrypoint `"/bin/sh`" --name target target -c `"tail -f /dev/null`""
+    # containerCreationCommand = "docker create -it --entrypoint `"/bin/sh`" --name containerName imageName -c `"tail -f /dev/null`""
 }
 
 ## UAC

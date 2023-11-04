@@ -83,7 +83,7 @@ Write-Host "Download done!"
 
 # DOCKER CONFIG
 $dockerConfigJson = $dockerConfig | ConvertTo-Json -Depth 10
-$dockerConfigJson | Out-File -FilePath 'dockerConfig.json'
+$dockerConfigJson | Out-File -FilePath "$folderPath\docker-config.json"
 
 # REBOOT
 while ($true) {

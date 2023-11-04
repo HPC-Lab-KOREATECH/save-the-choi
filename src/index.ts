@@ -13,7 +13,7 @@ const rootPath = `${path.dirname(app.getPath("userData"))}/save-the-choi`;
 const configPath = `${rootPath}/config.json`;
 const dockerConfigPath = `${rootPath}/docker-config.json`;
 let config: Config;
-let dockerConfig: DockerConfig = JSON.parse(fs.readFileSync(dockerConfigPath, 'utf8'));
+let dockerConfig: DockerConfig = JSON.parse(fs.readFileSync(dockerConfigPath, 'utf8').trim());
 const saveConfig = (newConfig: Config) => {
     logger.info(`saveConfig(${JSON.stringify(newConfig)})`);
     config = newConfig;

@@ -46,11 +46,23 @@ while (Get-Process | Where-Object { $_.Name -like 'docker-desktop-installer' }) 
 
 # DOCKER SETTING
 Write-Host "`nChanging settings of Docker Desktop"
+& "$env:ProgramFiles\Docker\Docker\Docker Desktop.exe"
+do {
+    $dockerProcess = Get-Process "Docker Desktop" -ErrorAction SilentlyContinue |
+            Where-Object { $_.MainWindowTitle -ne "" }
+    Start-Sleep -Milliseconds 100
+} while ($null -eq $dockerProcess)
+$dockerProcess.CloseMainWindow() | Out-Null
+
 $dockerSettingsPath = "$Env:APPDATA\Docker\settings.json"
+do {
+    $fileExists = Test-Path $dockerSettingsPath
+    Start-Sleep -Seconds 1
+} while (-not $fileExists)
 if (Test-Path $dockerSettingsPath) {
     $jsonString = Get-Content $dockerSettingsPath -Raw
     $jsonObject = $jsonString | ConvertFrom-Json
-    $jsonObject.openUIOnStartupDisabled = $false
+    $jsonObject.openUIOnStartupDisabled = $true
     $jsonObject.autoStart = $true
     $jsonString = $jsonObject | ConvertTo-Json -Depth 10
     $jsonString | Set-Content $dockerSettingsPath

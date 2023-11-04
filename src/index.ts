@@ -63,6 +63,7 @@ let tray: Tray;
 let isTrayClosing = false;
 ipcMain.on('start', async (event) => {
     config.status = 'initialized';
+    updateTrayMenu(true);
     await changeMode('idle');
     mainWindow.setSize(400, 330, true);
     await mainWindow.loadFile(path.join(__dirname, "../main.html"));
@@ -123,8 +124,9 @@ function updateTrayMenu(enabled = true) {
             enabled
         },
         {
-            label: 'Close', click: _ => {
+            label: 'Close', click: async _ => {
                 isTrayClosing = true;
+                await runCommand(`docker stop ${dockerConfig.containerName}`);
                 app.quit();
             }
         }
@@ -195,9 +197,11 @@ if (!gotTheLock) {
         updateTrayMenu(false);
         tray.setToolTip('Save the Choi (Wait for Docker)');
         logger.info('Wait for Docker');
+        await runCommand(`& \\"$env:ProgramFiles\\Docker\\Docker\\Docker Desktop.exe\\"`);
         await waitForDocker();
         if (config.status === 'installation') {
             logger.info('Status: Installation');
+            updateTrayMenu(false);
             tray.setToolTip('Save the Choi (Installation)');
             await runCommand(`docker rm --force ${dockerConfig.containerName}`);
             await runCommand(`docker rmi --force ${dockerConfig.imageName}`);

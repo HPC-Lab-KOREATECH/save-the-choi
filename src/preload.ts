@@ -1,7 +1,11 @@
 import {contextBridge, ipcRenderer} from 'electron';
 
 contextBridge.exposeInMainWorld('electronBridge', {
-    closeWindow: () => ipcRenderer.send('close-window')
+    start: () => ipcRenderer.send('start'),
+    requestUpdateConfig: () => ipcRenderer.send('requestUpdateConfig'),
+    handleUpdateConfig: (callback: Function) => {
+        ipcRenderer.on('updateConfig', (event, ...args) => callback(...args));
+    }
 });
 
 window.addEventListener("DOMContentLoaded", () => {

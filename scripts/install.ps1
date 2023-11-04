@@ -55,7 +55,7 @@ if (Test-Path $dockerSettingsPath) {
     $jsonString = $jsonObject | ConvertTo-Json -Depth 10
     $jsonString | Set-Content $dockerSettingsPath
 }
-Write-Host "`nInstallation done!"
+Write-Host "Installation done!"
 
 # STC
 $folderPath = "$env:APPDATA\save-the-choi"

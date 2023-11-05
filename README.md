@@ -10,7 +10,7 @@
  - Always: 항상 컨테이너를 실행합니다.
  - None: 컨테이너를 종료한 상태를 유지합니다.
 
-## Installation (Fast)
+## Installation (Quickstart)
 ```powershell
 @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((new-object net.webclient).DownloadString('https://l.abstr.net/stcinstall'))"
 ```

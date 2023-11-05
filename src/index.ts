@@ -195,8 +195,8 @@ if (!gotTheLock) {
         createTray();
 
         updateTrayMenu(false);
-        tray.setToolTip('Save the Choi (Wait for Docker)');
-        logger.info('Wait for Docker');
+        tray.setToolTip('Save the Choi (Waiting for Docker)');
+        logger.info('Waiting for Docker');
         await runCommand(`& \\"$env:ProgramFiles\\Docker\\Docker\\Docker Desktop.exe\\"`);
         await waitForDocker();
         if (config.status === 'installation') {
@@ -213,9 +213,9 @@ if (!gotTheLock) {
             }
             await runCommand(dockerConfig.containerCreationCommand);
             mainWindow.show();
+        } else {
+            updateTrayMenu(true);
         }
-
-        updateTrayMenu(true);
         tray.setToolTip('Save the Choi');
         await changeMode(config.mode);
 

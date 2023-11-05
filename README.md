@@ -19,7 +19,7 @@
 설치 시, 시작 프로그램으로 Save the Choi가 자동으로 등록됩니다. (실행 프로그램 경로: `%APPDATA%\save-the-choi\stc.exe`)
 
 ## Config
-`%APPDATA%\save-the-choi\config.json`의 `idleThreshold` 값을 변경한 후 (기본 300초), 프로그램을 재시작하면 원하는 유후 시간 후에 컨테이너가 시작됩니다.
+`%APPDATA%\save-the-choi\config.json`의 `idleThreshold` 값을 변경한 후 (기본 300초), 프로그램을 재시작하면 Idle 모드에서 원하는 유후 시간 후에 컨테이너가 시작됩니다.
 
 ## Uninstallation
 `scripts/uninstall.ps1`을 Powershell에서 실행합니다.

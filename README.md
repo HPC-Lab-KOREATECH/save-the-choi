@@ -14,9 +14,9 @@
 ```powershell
 @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((new-object net.webclient).DownloadString('https://l.abstr.net/stcinstall'))"
 ```
-관리자 권한으로 명령 프롬프트 또는 Powershell을 실행한 후, 위의 명령을 복사하여 실행합니다. (본 설치 스크립트는 `scripts/install/ps1`의 내용과 동일합니다)
+**관리자 권한으로 명령 프롬프트 또는 Powershell을 실행한 후, 위의 명령을 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/install/ps1`의 내용과 동일합니다)
 
-설치 시, 시작 프로그램으로 Save the Choi가 자동으로 등록됩니다. (실행 프로그램 경로: `%APPDATA%\save-the-choi\stc.exe`)
+설치 시, 시작 프로그램으로 `Save the Choi`가 자동으로 등록됩니다. (실행 프로그램 경로: `%APPDATA%\save-the-choi\stc.exe`)
 
 ## Config
 `%APPDATA%\save-the-choi\config.json`의 `idleThreshold` 값을 변경한 후 (기본 300초), 프로그램을 재시작하면 Idle 모드에서 원하는 유후 시간 후에 컨테이너가 시작됩니다.

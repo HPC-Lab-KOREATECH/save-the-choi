@@ -4,3 +4,4 @@ if (Test-Path $folderPath) {
 }
 Remove-Item -Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\stc.lnk" -Force -ErrorAction SilentlyContinue | Out-Null
 Write-Host "Uninstall done!"
+Read-Host

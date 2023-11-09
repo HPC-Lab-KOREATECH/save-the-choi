@@ -1,7 +1,7 @@
 # CONFIG
 $dockerURL = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
-$imageURL = "https://l.abstr.net/stcimage"
-$stcURL = "https://l.abstr.net/stcbuildwindows"
+$imageURL = "https://l.hpclab.kr/stcimage"
+$stcURL = "https://l.hpclab.kr/stcbuildwindows"
 $dockerConfig = @{
     imageName = "stc-image"
     containerName = "stc-container"

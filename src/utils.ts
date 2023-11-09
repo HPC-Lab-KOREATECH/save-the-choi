@@ -6,7 +6,7 @@ function sleep(ms: number) {
 }
 
 export function runCommand(command: string): Promise<{ stdout: string, stderr: string, error: ExecException }> {
-    const cmd = process.platform ? `powershell -NoProfile -ExecutionPolicy Bypass -Command "${command}"` : command;
+    const cmd = `powershell -NoProfile -ExecutionPolicy Bypass -Command "${command}"`;
     return new Promise((resolve, reject) => {
         exec(cmd, (error, stdout, stderr) => {
             resolve({stdout, stderr, error});

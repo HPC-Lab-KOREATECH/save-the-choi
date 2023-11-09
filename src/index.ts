@@ -14,7 +14,6 @@ const configPath = `${rootPath}/config.json`;
 const dockerConfigPath = `${rootPath}/docker-config.json`;
 let config: Config;
 let dockerConfig: DockerConfig = JSON.parse(fs.readFileSync(dockerConfigPath, 'utf8').trim());
-let isWindows = process.platform === 'win32';
 const saveConfig = (newConfig: Config) => {
     logger.info(`saveConfig(${JSON.stringify(newConfig)})`);
     config = newConfig;
@@ -198,11 +197,7 @@ if (!gotTheLock) {
         updateTrayMenu(false);
         tray.setToolTip('Save the Choi (Waiting for Docker)');
         logger.info('Waiting for Docker');
-        if(isWindows) {
-            await runCommand(`& \\"$env:ProgramFiles\\Docker\\Docker\\Docker Desktop.exe\\"`);
-        } else {
-            await runCommand(`service docker start`);
-        }
+        await runCommand(`& \\"$env:ProgramFiles\\Docker\\Docker\\Docker Desktop.exe\\"`);
         await waitForDocker();
         if (config.status === 'installation') {
             logger.info('Status: Installation');

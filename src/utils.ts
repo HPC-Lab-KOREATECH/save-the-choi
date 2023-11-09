@@ -1,11 +1,12 @@
 import {exec, ExecException} from "child_process";
+import * as process from "process";
 
 function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export function runCommand(command: string): Promise<{ stdout: string, stderr: string, error: ExecException }> {
-    const cmd = `powershell -NoProfile -ExecutionPolicy Bypass -Command "${command}"`;
+    const cmd = process.platform ? `powershell -NoProfile -ExecutionPolicy Bypass -Command "${command}"` : command;
     return new Promise((resolve, reject) => {
         exec(cmd, (error, stdout, stderr) => {
             resolve({stdout, stderr, error});

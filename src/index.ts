@@ -14,6 +14,7 @@ const configPath = `${rootPath}/config.json`;
 const dockerConfigPath = `${rootPath}/docker-config.json`;
 let config: Config;
 let dockerConfig: DockerConfig = JSON.parse(fs.readFileSync(dockerConfigPath, 'utf8').trim());
+let isWindows = process.platform === 'win32';
 const saveConfig = (newConfig: Config) => {
     logger.info(`saveConfig(${JSON.stringify(newConfig)})`);
     config = newConfig;
@@ -197,7 +198,11 @@ if (!gotTheLock) {
         updateTrayMenu(false);
         tray.setToolTip('Save the Choi (Waiting for Docker)');
         logger.info('Waiting for Docker');
-        await runCommand(`& \\"$env:ProgramFiles\\Docker\\Docker\\Docker Desktop.exe\\"`);
+        if(isWindows) {
+            await runCommand(`& \\"$env:ProgramFiles\\Docker\\Docker\\Docker Desktop.exe\\"`);
+        } else {
+            await runCommand(`service docker start`);
+        }
         await waitForDocker();
         if (config.status === 'installation') {
             logger.info('Status: Installation');
@@ -206,10 +211,11 @@ if (!gotTheLock) {
             await runCommand(`docker rm --force ${dockerConfig.containerName}`);
             await runCommand(`docker rmi --force ${dockerConfig.imageName}`);
             await runCommand(`docker load -i ${rootPath}/image.tar`);
+            fs.unlinkSync(`${rootPath}/image.tar`);
             if (dockerConfig.containerCreationCommand) {
                 await runCommand(dockerConfig.containerCreationCommand);
             } else {
-                await runCommand(`docker create -it --entrypoint "/opt/run.sh" --name ${dockerConfig.containerName} ${dockerConfig.imageName}`);
+                await runCommand(`docker create --privileged -it --entrypoint "/opt/run.sh" --name ${dockerConfig.containerName} ${dockerConfig.imageName}`);
             }
             await runCommand(dockerConfig.containerCreationCommand);
             mainWindow.show();

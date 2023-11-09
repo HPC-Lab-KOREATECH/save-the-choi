@@ -5,7 +5,11 @@ imageURL="https://l.hpclab.kr/stcimage"
 imageName="stc-image",
 containerName="stc-container"
 
-sudo apt-get update && sudo apt-get install tmux tar jq -y
+mode="idle"
+idleThreshold=300
+
+echo "Install prerequisites..."
+sudo apt-get update && sudo apt-get install tmux wget tar jq -y
 if ! [ -x "$(command -v docker)" ]; then
     echo 'Docker is not installed. Start the installation.'
     # Add Docker's official GPG key:

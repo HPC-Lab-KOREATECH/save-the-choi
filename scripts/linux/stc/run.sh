@@ -21,23 +21,28 @@ control_container() {
     echo "$mode $idle_threshold"
     case $mode in
         "always")
-            [ -z "$(is_container_running)" ] && docker start $CONTAINER_NAME
+            if [ -z "$(is_container_running)" ]; then
+              echo "[stc] (always) Start container"
+              docker start $CONTAINER_NAME
+            fi
             ;;
         "idle")
             local idle_time_ms=$(xprintidle)
             local idle_time=$((idle_time_ms / 1000))
                           echo "333 $idle_time $idle_time_ms"
             if [ "$idle_time" -gt "$idle_threshold" ] && [ -z "$(is_container_running)" ]; then
-              echo "111"
+                echo "[stc] (idle) Start container"
                 docker start $CONTAINER_NAME
             elif [ "$idle_time" -le "$idle_threshold" ] && [ ! -z "$(is_container_running)" ]; then
-              echo "222"
+                echo "[stc] (idle) Stop container"
                 docker stop $CONTAINER_NAME
             fi
             ;;
         "none")
-            # 컨테이너가 실행 중이라면 중지합니다.
-            [ ! -z "$(is_container_running)" ] && docker stop $CONTAINER_NAME
+            if [ ! -z "$(is_container_running)" ]; then
+              echo "[stc] (always) Stop container"
+              docker stop $CONTAINER_NAME
+            fi
             ;;
         *)
             echo "Unknown mode: $mode"
@@ -45,15 +50,7 @@ control_container() {
     esac
 }
 
-inotifywait -m -e close_write --format '%w%f' "$CONFIG_FILE" | while read file; do
-    sleep 1
-    mode=$(jq -r '.mode' "$CONFIG_FILE")
-    idle_threshold=$(jq -r '.idleThreshold' "$CONFIG_FILE")
-    control_container "$mode" "$idle_threshold"
-done &
-
 while true; do
-    echo "do"
     mode=$(jq -r '.mode' "$CONFIG_FILE")
     idle_threshold=$(jq -r '.idleThreshold' "$CONFIG_FILE")
     control_container "$mode" "$idle_threshold"

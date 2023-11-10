@@ -45,6 +45,8 @@ sudo jq -n \
   --arg containerName "$containerName" \
   '{imageName: $imageName, containerName: $containerName}' >"/opt/stc/docker-config.json"
 sudo curl -L -o /opt/stc/image.tar "$imageURL"
+sh -c "docker rm --force $containerName 2> /dev/null"
+sh -c "docker rmi --force $imageName 2> /dev/null"
 sh -c "docker load -i /opt/stc/image.tar"
 sh -c "docker create --privileged -it --entrypoint \"/opt/run.sh\" --name $containerName $imageName"
 rm /opt/stc/image.tar

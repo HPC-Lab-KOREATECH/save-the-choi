@@ -44,7 +44,7 @@ sudo jq -n \
   --arg imageName "$imageName" \
   --arg containerName "$containerName" \
   '{imageName: $imageName, containerName: $containerName}' >"/opt/stc/docker-config.json"
-sudo curl -L -o /opt/stc/image.tar $imageURL
+sudo curl -L -o /opt/stc/image.tar "$imageURL"
 sh -c "docker load -i /opt/stc/image.tar"
 rm /opt/stc/image.tar
 sudo chown "$user" /opt/stc -R

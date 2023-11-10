@@ -18,6 +18,7 @@ is_container_running() {
 control_container() {
     local mode=$1
     local idle_threshold=$2
+    echo "$mode $idle_threshold"
     case $mode in
         "always")
             [ -z "$(is_container_running)" ] && docker start $CONTAINER_NAME

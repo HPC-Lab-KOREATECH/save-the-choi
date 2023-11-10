@@ -8,7 +8,7 @@ mode="idle"
 idleThreshold=300
 
 # DOCKER-CONFIG
-imageName="stc-image",
+imageName="stc-image"
 containerName="stc-container"
 
 echo "[stc] Install prerequisites..."

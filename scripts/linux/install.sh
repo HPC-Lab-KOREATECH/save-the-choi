@@ -9,7 +9,7 @@ mode="idle"
 idleThreshold=300
 
 echo "Install prerequisites..."
-sudo apt-get update && sudo apt-get install tmux wget tar jq -y
+sudo apt-get update && sudo apt-get install tmux wget tar jq inotify-tools xprintidle -y
 if ! [ -x "$(command -v docker)" ]; then
     echo 'Docker is not installed. Start the installation.'
     # Add Docker's official GPG key:
@@ -25,14 +25,21 @@ if ! [ -x "$(command -v docker)" ]; then
       "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
       sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     sudo apt-get update
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 fi
-sudo useradd -M stc
-sudo usermod -aG docker stc
-sudo mkdir /opt/stc -p
-sudo wget $imageURL -o /opt/stc/image.tar
-sudo docker load -i /opt/stc/image.tar
-sudo rm /opt/stc/image.tar
 
-# 압축 풀기
+jq -n \
+  --arg imageName "$imageName" \
+  --arg containerName "$containerName" \
+  '{imageName: $imageName, containerName: $containerName}' > "/opt/stc/docker-config.json"
 
+user=$(whoami)
+sudo usermod -aG docker $user
+newgrp docker
+
+mkdir /opt/stc -p
+curl -L -o /opt/stc/image.tar https://l.hpclab.kr/stcimage
+docker load -i /opt/stc/image.tar
+rm /opt/stc/image.tar
+
+#gnome-terminal -- bash -c "while true; do echo test; sleep 1; done"

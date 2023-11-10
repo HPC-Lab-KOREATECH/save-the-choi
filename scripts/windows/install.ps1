@@ -5,8 +5,6 @@ $stcURL = "https://l.hpclab.kr/stcbuildwindows"
 $dockerConfig = @{
     imageName = "stc-image"
     containerName = "stc-container"
-    # (OPTIONAL)
-    # containerCreationCommand = "docker create -it --entrypoint `"/bin/sh`" --name containerName imageName -c `"tail -f /dev/null`""
 }
 
 ## UAC

@@ -48,6 +48,7 @@ inotifywait -m -e close_write --format '%w%f' "$CONFIG_FILE" | while read file; 
 done &
 
 while true; do
+    echo "do"
     mode=$(jq -r '.mode' "$CONFIG_FILE")
     idle_threshold=$(jq -r '.idleThreshold' "$CONFIG_FILE")
     control_container "$mode" "$idle_threshold"

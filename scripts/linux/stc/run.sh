@@ -25,9 +25,12 @@ control_container() {
         "idle")
             local idle_time_ms=$(xprintidle)
             local idle_time=$((idle_time_ms / 1000))
+                          echo "333"
             if [ "$idle_time" -gt "$idle_threshold" ] && [ -z "$(is_container_running)" ]; then
+              echo "111"
                 docker start $CONTAINER_NAME
             elif [ "$idle_time" -le "$idle_threshold" ] && [ ! -z "$(is_container_running)" ]; then
+              echo "222"
                 docker stop $CONTAINER_NAME
             fi
             ;;

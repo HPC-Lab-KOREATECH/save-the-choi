@@ -1,12 +1,16 @@
 #!/bin/sh
 
-# CONFIG
+# URL
 imageURL="https://l.hpclab.kr/stcimage"
+
+# CONFIG
+mode="idle"
+idleThreshold=300
+
+# DOCKER-CONFIG
 imageName="stc-image",
 containerName="stc-container"
 
-mode="idle"
-idleThreshold=300
 
 echo "Install prerequisites..."
 sudo apt-get update && sudo apt-get install tmux wget tar jq inotify-tools xprintidle -y
@@ -28,18 +32,17 @@ if ! [ -x "$(command -v docker)" ]; then
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 fi
 
-jq -n \
+user=$(sudo logname)
+echo $user
+sudo usermod -aG docker "$user"
+sudo rm -rf /opt/stc
+sudo mkdir /opt/stc -p
+sudo jq -n \
   --arg imageName "$imageName" \
   --arg containerName "$containerName" \
   '{imageName: $imageName, containerName: $containerName}' > "/opt/stc/docker-config.json"
-
-user=$(whoami)
-sudo usermod -aG docker $user
-newgrp docker
-
-mkdir /opt/stc -p
-curl -L -o /opt/stc/image.tar https://l.hpclab.kr/stcimage
-docker load -i /opt/stc/image.tar
+sudo curl -L -o /opt/stc/image.tar $imageURL
+sh -c "docker load -i /opt/stc/image.tar"
 rm /opt/stc/image.tar
 
-#gnome-terminal -- bash -c "while true; do echo test; sleep 1; done"
+echo "Install done!"

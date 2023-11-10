@@ -46,7 +46,7 @@ sudo jq -n \
   '{imageName: $imageName, containerName: $containerName}' >"/opt/stc/docker-config.json"
 sudo curl -L -o /opt/stc/image.tar "$imageURL"
 sh -c "docker load -i /opt/stc/image.tar"
+sh -c "docker create --privileged -it --entrypoint \"/opt/run.sh\" --name $containerName $imageName"
 rm /opt/stc/image.tar
 sudo chown "$user" /opt/stc -R
-
 echo "[stc] Install done!"

@@ -49,6 +49,7 @@ sh -c "docker rm --force $containerName 2> /dev/null"
 sh -c "docker rmi --force $imageName 2> /dev/null"
 sh -c "docker load -i /opt/stc/image.tar"
 echo 1
+echo "docker create --privileged -it --entrypoint \"/opt/run.sh\" --name $containerName $imageName"
 sh -c "docker create --privileged -it --entrypoint '/opt/run.sh' --name $containerName $imageName"
 echo 12
 rm /opt/stc/image.tar

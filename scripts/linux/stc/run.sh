@@ -26,7 +26,7 @@ control_container() {
         "idle")
             local idle_time_ms=$(xprintidle)
             local idle_time=$((idle_time_ms / 1000))
-                          echo "333"
+                          echo "333 $idle_time $idle_time_ms"
             if [ "$idle_time" -gt "$idle_threshold" ] && [ -z "$(is_container_running)" ]; then
               echo "111"
                 docker start $CONTAINER_NAME
@@ -46,6 +46,7 @@ control_container() {
 }
 
 inotifywait -m -e close_write --format '%w%f' "$CONFIG_FILE" | while read file; do
+    sleep 1
     mode=$(jq -r '.mode' "$CONFIG_FILE")
     idle_threshold=$(jq -r '.idleThreshold' "$CONFIG_FILE")
     control_container "$mode" "$idle_threshold"

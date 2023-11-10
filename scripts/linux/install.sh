@@ -48,7 +48,11 @@ sudo curl -L -o /opt/stc/image.tar "$imageURL"
 sh -c "docker rm --force $containerName 2> /dev/null"
 sh -c "docker rmi --force $imageName 2> /dev/null"
 sh -c "docker load -i /opt/stc/image.tar"
+echo 1
 sh -c "docker create --privileged -it --entrypoint \"/opt/run.sh\" --name $containerName $imageName"
+echo 12
 rm /opt/stc/image.tar
+echo 123
 sudo chown "$user" /opt/stc -R
+echo 1234
 echo "[stc] Install done!"

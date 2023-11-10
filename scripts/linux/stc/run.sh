@@ -28,6 +28,7 @@ control_container() {
         "idle")
             local idle_time_ms=$(xprintidle)
             local idle_time=$((idle_time_ms / 1000))
+            echo "[stc] idle=$idle_time"
             if [ "$idle_time" -gt "$idle_threshold" ] && [ -z "$(is_container_running)" ]; then
                 echo "[stc] (idle) Start container"
                 docker start $CONTAINER_NAME

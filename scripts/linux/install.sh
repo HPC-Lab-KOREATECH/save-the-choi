@@ -31,7 +31,7 @@ if ! [ -x "$(command -v docker)" ]; then
   sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 fi
 
-echo "[stc] Install config files..."
+echo "[stc] Install stc files..."
 user=$(sudo logname)
 sudo usermod -aG docker "$user"
 sudo rm -rf /opt/stc
@@ -47,5 +47,6 @@ sudo jq -n \
 sudo curl -L -o /opt/stc/image.tar $imageURL
 sh -c "docker load -i /opt/stc/image.tar"
 rm /opt/stc/image.tar
+sudo chown "$user" /opt/stc -R
 
 echo "[stc] Install done!"

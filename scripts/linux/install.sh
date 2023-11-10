@@ -37,8 +37,8 @@ sudo usermod -aG docker "$user"
 sudo rm -rf /opt/stc
 sudo mkdir /opt/stc -p
 sudo jq -n \
-  --arg mode "mode" \
-  --arg idleThreshold "idleThreshold" \
+  --arg mode "$mode" \
+  --arg idleThreshold "$idleThreshold" \
   '{mode: $mode, idleThreshold: $idleThreshold}' >"/opt/stc/config.json"
 sudo jq -n \
   --arg imageName "$imageName" \

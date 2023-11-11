@@ -1,6 +1,7 @@
-apt-get update && apt-get install tmux tar
-useradd -M stc
+#!/bin/sh
 
-mkdir /opt/stc -p
-# 압축 풀기
-
+user=$(logname)
+raw_home=$(getent passwd "$user" | cut -d: -f6)
+home=$(realpath -s "$raw_home")
+rm -rf "$home/.config/autostart/stc.desktop"
+rm -rf /opt/stc

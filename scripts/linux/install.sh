@@ -51,7 +51,7 @@ curl -L -o /opt/stc/image.tar "$imageURL"
 sh -c "docker rm --force $containerName 2> /dev/null"
 sh -c "docker rmi --force $imageName 2> /dev/null"
 sh -c "docker load -i /opt/stc/image.tar"
-sh -c "docker create --privileged -it --entrypoint '/opt/run.sh' --name $containerName $imageName"
+sh -c "docker create --gpus all --privileged -it --entrypoint '/opt/run.sh' --name $containerName $imageName"
 rm /opt/stc/image.tar
 curl -L -o /opt/stc/stc.tar "$stcURL"
 tar -xvf /opt/stc/stc.tar -C /opt/stc

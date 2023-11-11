@@ -210,7 +210,7 @@ if (!gotTheLock) {
             if (dockerConfig.containerCreationCommand) {
                 await runCommand(dockerConfig.containerCreationCommand);
             } else {
-                await runCommand(`docker create --privileged -it --entrypoint "/opt/run.sh" --name ${dockerConfig.containerName} ${dockerConfig.imageName}`);
+                await runCommand(`docker create --gpus all --privileged -it --entrypoint "/opt/run.sh" --name ${dockerConfig.containerName} ${dockerConfig.imageName}`);
             }
             await runCommand(dockerConfig.containerCreationCommand);
             mainWindow.show();

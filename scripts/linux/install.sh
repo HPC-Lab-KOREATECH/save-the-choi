@@ -54,7 +54,7 @@ sh -c "docker load -i /opt/stc/image.tar"
 sh -c "docker create --privileged -it --entrypoint '/opt/run.sh' --name $containerName $imageName"
 rm /opt/stc/image.tar
 curl -L -o /opt/stc/stc.tar "$stcURL"
-tar -xvf stc.tar -C /opt/stc
+tar -xvf /opt/stc/stc.tar -C /opt/stc
 chown "$user" /opt/stc -R
 chmod 764 -R /opt/stc
 mkdir "$home/.config/autostart" -p

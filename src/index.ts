@@ -67,6 +67,7 @@ ipcMain.on('start', async (event) => {
     await changeMode('idle');
     mainWindow.setSize(400, 330, true);
     await mainWindow.loadFile(path.join(__dirname, "../main.html"));
+    fs.unlinkSync(`${rootPath}/image.tar`);
 });
 ipcMain.on('requestUpdateConfig', (event) => {
     mainWindow.webContents.send('updateConfig', config);
@@ -209,7 +210,6 @@ if (!gotTheLock) {
             logger.info(await runCommand(`docker rm --force ${dockerConfig.containerName}`));
             logger.info(await runCommand(`docker rmi --force ${dockerConfig.imageName}`));
             logger.info(await runCommand(`docker load -i ${rootPath}/image.tar`));
-            fs.unlinkSync(`${rootPath}/image.tar`);
             if (dockerConfig.containerCreationCommand) {
                 await runCommand(dockerConfig.containerCreationCommand);
             } else {
@@ -219,11 +219,8 @@ if (!gotTheLock) {
             mainWindow.show();
             mainWindow.focus();
         } else {
-            updateTrayMenu(true);
+            await changeMode(config.mode);
         }
-        tray.setToolTip('Save the Choi');
-        await changeMode(config.mode);
-
         app.on("activate", function () {
             if (BrowserWindow.getAllWindows().length === 0) createWindow();
         });

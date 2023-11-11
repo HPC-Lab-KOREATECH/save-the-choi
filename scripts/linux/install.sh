@@ -2,6 +2,7 @@
 
 # URL
 imageURL="https://l.hpclab.kr/stcimage"
+stcURL="https://l.hpclab.kr/stcbuildlinux"
 
 # CONFIG
 mode="idle"
@@ -12,7 +13,7 @@ imageName="stc-image"
 containerName="stc-container"
 
 echo "[stc] Install prerequisites..."
-sudo apt-get update && sudo apt-get install tmux wget tar jq inotify-tools xprintidle -y
+sudo apt-get update && sudo apt-get install tmux curl tar jq xprintidle tmux -y
 if ! [ -x "$(command -v docker)" ]; then
   echo '[stc] Docker is not installed. Start the installation.'
   # Add Docker's official GPG key:
@@ -33,6 +34,8 @@ fi
 
 echo "[stc] Install stc files..."
 user=$(sudo logname)
+raw_home=$(getent passwd "$user" | cut -d: -f6)
+home=$(realpath -s "$raw_home")
 sudo usermod -aG docker "$user"
 sudo rm -rf /opt/stc
 sudo mkdir /opt/stc -p
@@ -50,5 +53,11 @@ sh -c "docker rmi --force $imageName 2> /dev/null"
 sh -c "docker load -i /opt/stc/image.tar"
 sh -c "docker create --privileged -it --entrypoint '/opt/run.sh' --name $containerName $imageName"
 rm /opt/stc/image.tar
+sudo curl -L -o /opt/stc/stc.tar "$stcURL"
+sudo tar -xvf stc.tar -C /opt/stc
 sudo chown "$user" /opt/stc -R
+sudo chmod 764 -R /opt/stc
+sudo mkdir "$home/.config/autostart" -p
+sudo cp /opt/stc/stc.desktop "$home/.config/autostart/"
 echo "[stc] Install done!"
+

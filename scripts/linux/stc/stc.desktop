@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=stc
+Exec="/opt/stc/run.sh"
+Type=Application

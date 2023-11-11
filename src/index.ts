@@ -153,23 +153,26 @@ function createTray() {
 
 let lastTime = new Date();
 setInterval(async _ => {
-    config.idleTime = getIdleTime();
-    if (config.idleTime > config.idleThreshold) {
-        if (!config.idleEnabled) {
-            config.idleEnabled = true;
-            await runCommand(`docker start ${dockerConfig.containerName}`);
+    if (config.status === "initialized") {
+        config.idleTime = getIdleTime();
+
+        if (config.idleTime > config.idleThreshold) {
+            if (!config.idleEnabled) {
+                config.idleEnabled = true;
+                logger.info(await runCommand(`docker start ${dockerConfig.containerName}`));
+            }
+        } else {
+            if (config.idleEnabled) {
+                config.idleEnabled = false;
+                logger.info(await runCommand(`docker stop ${dockerConfig.containerName}`));
+            }
         }
-    } else {
-        if (config.idleEnabled) {
-            config.idleEnabled = false;
-            await runCommand(`docker stop ${dockerConfig.containerName}`);
+        if (config.mode === 'always' || (config.mode === 'idle' && config.idleEnabled)) {
+            config.totalTime += new Date().getTime() - lastTime.getTime();
         }
-    }
-    if (config.mode === 'always' || (config.mode === 'idle' && config.idleEnabled)) {
-        config.totalTime += new Date().getTime() - lastTime.getTime();
-    }
-    if (mainWindow.isVisible()) {
-        mainWindow.webContents.send('updateConfig', config);
+        if (mainWindow.isVisible()) {
+            mainWindow.webContents.send('updateConfig', config);
+        }
     }
     lastTime = new Date();
 }, 300);
@@ -197,15 +200,15 @@ if (!gotTheLock) {
         updateTrayMenu(false);
         tray.setToolTip('Save the Choi (Waiting for Docker)');
         logger.info('Waiting for Docker');
-        await runCommand(`& \\"$env:ProgramFiles\\Docker\\Docker\\Docker Desktop.exe\\"`);
+        logger.info(await runCommand(`& \\"$env:ProgramFiles\\Docker\\Docker\\Docker Desktop.exe\\"`));
         await waitForDocker();
         if (config.status === 'installation') {
             logger.info('Status: Installation');
             updateTrayMenu(false);
-            tray.setToolTip('Save the Choi (Installation)');
-            await runCommand(`docker rm --force ${dockerConfig.containerName}`);
-            await runCommand(`docker rmi --force ${dockerConfig.imageName}`);
-            await runCommand(`docker load -i ${rootPath}/image.tar`);
+            tray.setToolTip('Save the Choi (Installing Container)');
+            logger.info(await runCommand(`docker rm --force ${dockerConfig.containerName}`));
+            logger.info(await runCommand(`docker rmi --force ${dockerConfig.imageName}`));
+            logger.info(await runCommand(`docker load -i ${rootPath}/image.tar`));
             fs.unlinkSync(`${rootPath}/image.tar`);
             if (dockerConfig.containerCreationCommand) {
                 await runCommand(dockerConfig.containerCreationCommand);
@@ -214,6 +217,7 @@ if (!gotTheLock) {
             }
             await runCommand(dockerConfig.containerCreationCommand);
             mainWindow.show();
+            mainWindow.focus();
         } else {
             updateTrayMenu(true);
         }

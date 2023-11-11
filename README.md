@@ -17,7 +17,7 @@
 ### Windows
 
 ```powershell
-@powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((new-object net.webclient).DownloadString('https://l.abstr.net/stcinstall'))"
+@powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((new-object net.webclient).DownloadString('https://l.hpclab.kr/stcinstallwindows'))"
 ```
 
 **관리자 권한으로 명령 프롬프트를 실행한 후, 위의 명령을 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/windows/install/ps1`의 내용과 동일합니다)

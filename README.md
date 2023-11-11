@@ -76,12 +76,24 @@ curl -Ls https://l.hpclab.kr/stcinstalllinux | sudo bash && /opt/stc/run.sh
 
 ### Windows
 
+트레이 아이콘을 우클릭한 메뉴를 통해 `Idle`, `Always`, `None` 모드 변경이 가능합니다.
+
 `%APPDATA%\save-the-choi\config.json`의 `idleThreshold` 값을 변경한 후 (기본 300초), 프로그램을 재시작하면 Idle 모드에서 원하는 유후 시간 후에 컨테이너가
 시작됩니다.
 
 ### Linux
 
 `/opt/stc/config.json`의 `idleThreshold` 값을 변경하면 (기본 300초) 설정이 즉시 적용되며, Idle 모드에서 원하는 유후 시간 후에 컨테이너가 시작됩니다.
+
+#### Scripts
+
+다음 모드 변경 스크립트를 통해 모드 변경이 가능합니다.
+
+`/opt/stc/idle.sh <idleThreshold (기본 값: 300)>`: idle 상태로 프로그램을 설정합니다.
+
+`/opt/stc/always.sh`: always 상태로 프로그램을 설정합니다.
+
+`/opt/stc/none.sh`: none 상태로 프로그램을 설정합니다.
 
 ## Uninstallation
 

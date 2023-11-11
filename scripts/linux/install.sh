@@ -60,4 +60,8 @@ chmod 764 -R /opt/stc
 mkdir "$home/.config/autostart" -p
 cp /opt/stc/stc.desktop "$home/.config/autostart/"
 echo "[stc] Install done!"
-
+if [ -n "$DISPLAY" ]; then
+    /opt/stc/run.sh
+else
+    echo "[stc] This is not a graphical session. When a graphical session is initiated, stc will automatically run."
+fi

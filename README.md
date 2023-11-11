@@ -83,7 +83,7 @@ curl -Ls https://l.hpclab.kr/stcinstalllinux | sudo bash && /opt/stc/run.sh
 
 ### Linux
 
-`/opt/stc/config.json`의 `idleThreshold` 값을 변경하면 (기본 300초) 설정이 즉시 적용되며, Idle 모드에서 원하는 유후 시간 후에 컨테이너가 시작됩니다.
+`/opt/stc/config.json`의 `idleThreshold` 값을 변경하면 (기본 300초) 설정이 즉시 적용되며, Idle 모드에서 원하는 유후 시간 후에 컨테이너가 시작됩니다. (모드 변경 스크립트 이용 권장)
 
 #### Scripts
 

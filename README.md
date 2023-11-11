@@ -16,11 +16,19 @@
 
 ### Windows
 
-```powershell
+#### cmd.exe
+```batch
 @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((new-object net.webclient).DownloadString('https://l.hpclab.kr/stcinstallwindows'))"
 ```
+**관리자 권한으로 명령 프롬프트를 실행한 후, 위의 명령을 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/windows/install.ps1`의 내용과 동일합니다)
 
-**관리자 권한으로 명령 프롬프트를 실행한 후, 위의 명령을 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/windows/install/ps1`의 내용과 동일합니다)
+권한 등의 오류로 실행이 되지 않는 경우, powershell.exe를 통한 설치를 권장합니다.
+
+#### powershell.exe
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://l.hpclab.kr/stcinstallwindows')) 
+```
+**관리자 권한으로 파워쉘(powershell)를 실행한 후, 위의 명령을 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/windows/install.ps1`의 내용과 동일합니다)
 
 설치 시, 시작 프로그램으로 `Save the Choi`가 자동으로 등록됩니다. (실행 프로그램 경로: `%APPDATA%\save-the-choi\stc.exe`)
 

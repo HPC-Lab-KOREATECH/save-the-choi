@@ -63,6 +63,7 @@ let tray: Tray;
 let isTrayClosing = false;
 ipcMain.on('start', async (event) => {
     config.status = 'initialized';
+    saveConfig(config);
     updateTrayMenu(true);
     await changeMode('idle');
     mainWindow.setSize(400, 330, true);

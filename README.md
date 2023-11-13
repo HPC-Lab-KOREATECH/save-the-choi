@@ -102,7 +102,7 @@ Docker Desktop은 프로그램 추가/제거에서 수동으로 제거해야 합
 
 ### Linux
 ```bash
-curl -Ls https://l.hpclab.kr/stcuninstalllinux | sudo bash && /opt/stc/run.sh
+curl -Ls https://l.hpclab.kr/stcuninstalllinux | sudo bash
 ```
 
 **해당 명령을 터미널에 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/linux/uninstall.sh`의 내용과 동일합니다)

@@ -14,6 +14,9 @@ if (-not $myWindowsPrincipal.IsInRole($adminRole))
 # ACCELERATE DOWNLOAD
 $ProgressPreference = 'SilentlyContinue'
 
+Write-Host "Kill Save the Choi process"
+Stop-Process -Name "SaveTheChoi" | Out-Null
+
 Write-Host "Downloading Save the Choi from $stcURL"
 $destinationPath = "$folderPath\stc.exe"
 Invoke-WebRequest -Uri $stcURL -OutFile $destinationPath
@@ -25,3 +28,6 @@ $Startup = $WScriptShell.SpecialFolders('Startup')
 $Shortcut = $WScriptShell.CreateShortcut("$Startup\stc.lnk")
 $Shortcut.TargetPath = $destinationPath
 $Shortcut.Save()
+
+Write-Host "Launch Save the Choi"
+& "$env:ProgramFiles\save-the-choi\stc.exe"

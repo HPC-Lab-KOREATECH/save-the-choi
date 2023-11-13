@@ -16,17 +16,11 @@
 
 ### Windows
 
-#### powershell.exe (권장)
+#### powershell.exe
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://l.hpclab.kr/stcinstallwindows')) 
 ```
 **관리자 권한으로 파워쉘(powershell)를 실행한 후, 위의 명령을 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/windows/install.ps1`의 내용과 동일합니다)
-
-#### cmd.exe
-```batch
-@powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((new-object net.webclient).DownloadString('https://l.hpclab.kr/stcinstallwindows'))"
-```
-**관리자 권한으로 명령 프롬프트를 실행한 후, 위의 명령을 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/windows/install.ps1`의 내용과 동일합니다)
 
 권한 등의 오류로 실행이 되지 않는 경우, powershell.exe를 통한 설치를 권장합니다.
 
@@ -98,13 +92,19 @@ curl -Ls https://l.hpclab.kr/stcinstalllinux | sudo bash && /opt/stc/run.sh
 ## Uninstallation
 
 ### Windows
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://l.hpclab.kr/stcuninstallwindows')) 
+```
 
-`scripts/windows/uninstall.ps1`을 Powershell에서 실행합니다.
+**관리자 권한으로 파워쉘(powershell)를 실행한 후, 위의 명령을 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/windows/uninstall.ps1`의 내용과 동일합니다)
 
 Docker Desktop은 프로그램 추가/제거에서 수동으로 제거해야 합니다.
 
 ### Linux
+```bash
+curl -Ls https://l.hpclab.kr/stcuninstalllinux | sudo bash && /opt/stc/run.sh
+```
 
-`scripts/linux/uninstall.sh`를 쉘 환경에서 실행합니다. (sudo 이용)
+**해당 명령을 터미널에 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/linux/uninstall.sh`의 내용과 동일합니다)
 
 Docker는 패키지 관리 프로그램 또는 apt를 이용하여 수동으로 제거해야 합니다.

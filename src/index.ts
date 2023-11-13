@@ -48,6 +48,7 @@ const changeMode = async (mode: Mode) => {
         config.idleEnabled = false;
     } else if (mode === 'always') {
         await runCommand(`docker start ${dockerConfig.containerName}`);
+        config.idleEnabled = false;
     }
     saveConfig({...config, mode});
     mainWindow.webContents.send('updateConfig', config);
@@ -158,8 +159,8 @@ setInterval(async _ => {
     if (config.status === "initialized") {
         config.idleTime = getIdleTime();
 
-        if (config.idleTime > config.idleThreshold && config.mode === 'idle') {
-            if (!config.idleEnabled) {
+        if (config.idleTime > config.idleThreshold) {
+            if (!config.idleEnabled && config.mode === 'idle') {
                 config.idleEnabled = true;
                 logger.info(await runCommand(`docker start ${dockerConfig.containerName}`));
             }

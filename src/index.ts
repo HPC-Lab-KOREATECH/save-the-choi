@@ -158,7 +158,7 @@ setInterval(async _ => {
     if (config.status === "initialized") {
         config.idleTime = getIdleTime();
 
-        if (config.idleTime > config.idleThreshold) {
+        if (config.idleTime > config.idleThreshold && config.mode === 'idle') {
             if (!config.idleEnabled) {
                 config.idleEnabled = true;
                 logger.info(await runCommand(`docker start ${dockerConfig.containerName}`));

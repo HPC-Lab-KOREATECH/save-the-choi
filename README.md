@@ -8,7 +8,7 @@
 
 ## Mode
 
-- Idle: 컴퓨터가 5분 이상 유후 상태이면 컨테이너를 실행합니다. (사용자 입력 감지 시, 자동 중지됨)
+- Idle (설치 시 기본 값): 컴퓨터가 5분 이상 유후 상태이면 컨테이너를 실행합니다. (사용자 입력 감지 시, 자동 중지됨)
 - Always: 항상 컨테이너를 실행합니다.
 - None: 컨테이너를 종료한 상태를 유지합니다.
 
@@ -16,11 +16,19 @@
 
 ### Windows
 
+#### powershell.exe (권장)
 ```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://l.hpclab.kr/stcinstallwindows')) 
+```
+**관리자 권한으로 파워쉘(powershell)를 실행한 후, 위의 명령을 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/windows/install.ps1`의 내용과 동일합니다)
+
+#### cmd.exe
+```batch
 @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((new-object net.webclient).DownloadString('https://l.hpclab.kr/stcinstallwindows'))"
 ```
+**관리자 권한으로 명령 프롬프트를 실행한 후, 위의 명령을 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/windows/install.ps1`의 내용과 동일합니다)
 
-**관리자 권한으로 명령 프롬프트를 실행한 후, 위의 명령을 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/windows/install/ps1`의 내용과 동일합니다)
+권한 등의 오류로 실행이 되지 않는 경우, powershell.exe를 통한 설치를 권장합니다.
 
 설치 시, 시작 프로그램으로 `Save the Choi`가 자동으로 등록됩니다. (실행 프로그램 경로: `%APPDATA%\save-the-choi\stc.exe`)
 
@@ -68,12 +76,24 @@ curl -Ls https://l.hpclab.kr/stcinstalllinux | sudo bash && /opt/stc/run.sh
 
 ### Windows
 
+트레이 아이콘을 우클릭한 메뉴를 통해 `Idle`, `Always`, `None` 모드 변경이 가능합니다.
+
 `%APPDATA%\save-the-choi\config.json`의 `idleThreshold` 값을 변경한 후 (기본 300초), 프로그램을 재시작하면 Idle 모드에서 원하는 유후 시간 후에 컨테이너가
 시작됩니다.
 
 ### Linux
 
-`/opt/stc/config.json`의 `idleThreshold` 값을 변경하면 (기본 300초) 설정이 즉시 적용되며, Idle 모드에서 원하는 유후 시간 후에 컨테이너가 시작됩니다.
+`/opt/stc/config.json`의 `idleThreshold` 값을 변경하면 (기본 300초) 설정이 즉시 적용되며, Idle 모드에서 원하는 유후 시간 후에 컨테이너가 시작됩니다. (모드 변경 스크립트 이용 권장)
+
+#### Scripts
+
+다음 모드 변경 스크립트를 통해 모드 변경이 가능합니다.
+
+`/opt/stc/idle.sh <idleThreshold (기본 값: 300)>`: idle 상태로 프로그램을 설정합니다.
+
+`/opt/stc/always.sh`: always 상태로 프로그램을 설정합니다.
+
+`/opt/stc/none.sh`: none 상태로 프로그램을 설정합니다.
 
 ## Uninstallation
 

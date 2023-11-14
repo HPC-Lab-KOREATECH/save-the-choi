@@ -35,7 +35,7 @@ while (Get-Process | Where-Object { $_.Name -like 'docker-desktop-installer' }) 
 }
 
 # DOCKER SETTING
-Write-Host "`nChanging settings of Docker Desktop"
+Write-Host "`nChanging settings of Docker Desktop (If the installation stops here, press the Docker icon on the tray menu)"
 & "$env:ProgramFiles\Docker\Docker\Docker Desktop.exe"
 do {
     $dockerProcess = Get-Process "Docker Desktop" -ErrorAction SilentlyContinue |

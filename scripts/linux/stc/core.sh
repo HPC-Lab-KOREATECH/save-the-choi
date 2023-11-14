@@ -33,7 +33,7 @@ control_container() {
     ;;
   "none")
     if [ ! -z "$(is_container_running)" ]; then
-      echo "[stc] (always) Stop container"
+      echo "[stc] (none) Stop container"
       docker stop "$CONTAINER_NAME"
     fi
     ;;

@@ -56,7 +56,7 @@ const changeMode = async (mode: Mode) => {
     mainWindow.webContents.send('updateConfig', config);
 
     isChangingMode = false;
-    tray.setToolTip(`Save the Choi (${mode})`);
+    tray.setToolTip(`Save the Choi (${mode.toUpperCase()})`);
     updateTrayMenu(true);
 }
 

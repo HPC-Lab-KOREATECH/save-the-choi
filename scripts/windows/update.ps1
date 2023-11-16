@@ -19,6 +19,19 @@ Stop-Process -Name "stc" -ErrorAction SilentlyContinue | Out-Null
 Stop-Process -Name "SaveTheChoi" -ErrorAction SilentlyContinue | Out-Null
 
 $folderPath = "$env:APPDATA\save-the-choi"
+
+$excludedFiles = @("config.json", "docker-config.json", "image.tar")
+$items = Get-ChildItem -Path $folderPath
+foreach ($item in $items) {
+    if ($item.Name -notin $excludedFiles) {
+        if ($item.PSIsContainer) {
+            Remove-Item -Path $item.FullName -Recurse -Force -ErrorAction SilentlyContinue
+        } else {
+            Remove-Item -Path $item.FullName -Force -ErrorAction SilentlyContinue
+        }
+    }
+}
+
 Write-Host "Downloading Save the Choi from $stcURL"
 $destinationPath = "$folderPath\stc.exe"
 Invoke-WebRequest -Uri $stcURL -OutFile $destinationPath

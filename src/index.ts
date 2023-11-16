@@ -171,7 +171,6 @@ setInterval(async _ => {
         } else {
             if (config.idleEnabled) {
                 config.idleEnabled = false;
-                await waitPromise;
                 waitPromise = waitPromise.then(_ => runCommand(`docker stop ${dockerConfig.containerName}`, 30 * 1000));
                 logger.info('idle-stop', await waitPromise);
             }
@@ -184,7 +183,7 @@ setInterval(async _ => {
         }
     }
     lastTime = new Date();
-}, 1000);
+}, 300);
 setInterval(_ => {
     saveConfig(config);
 }, 1000 * 15);

@@ -15,6 +15,13 @@ function millisecondsToHoursMinutesSeconds(milliseconds: number) {
 window.electronBridge.handleUpdateConfig((config: Config) => {
     let title = document.getElementById('title');
     title.textContent = `Mode: ${config.mode.toUpperCase()} ${config.mode === 'idle' ? '(' + config.idleTime + 's)' : ''}`
+    if (config.mode === 'idle') {
+        title.style.color = config.idleEnabled ? 'green' : 'grey';
+    } else if (config.mode === 'always') {
+        title.style.color = 'green';
+    } else if (config.mode === 'none') {
+        title.style.color = 'gray';
+    }
     let time = document.getElementById('time');
     let timeText = millisecondsToHoursMinutesSeconds(config.totalTime);
     timeText = timeText === '' ? '0s' : timeText;

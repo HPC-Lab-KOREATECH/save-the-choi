@@ -78,6 +78,14 @@ $Shortcut = $WScriptShell.CreateShortcut("$Startup\stc.lnk")
 $Shortcut.TargetPath = $destinationPath
 $Shortcut.Save()
 
+Write-Host "Save the Choi has been added to the start menu programs..."
+$programsPath = [System.Environment]::GetFolderPath('Programs')
+$shortcutPath = Join-Path -Path $programsPath -ChildPath "Save the Choi.lnk"
+$WScriptShell = New-Object -ComObject WScript.Shell
+$Shortcut = $WScriptShell.CreateShortcut($shortcutPath)
+$Shortcut.TargetPath = $destinationPath
+$Shortcut.Save()
+
 # IMAGE
 Write-Host "Downloading container image from $imageURL"
 Invoke-WebRequest -Uri $imageURL -OutFile "$folderPath\image.tar"

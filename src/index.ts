@@ -1,7 +1,7 @@
 import {app, BrowserWindow, ipcMain, Menu, Tray} from "electron";
 import * as path from "path";
 import * as fs from 'fs';
-import {runCommand, waitForDocker} from "./utils";
+import {isDockerNotRunning, runCommand, waitForDocker} from "./utils";
 import * as process from "process";
 import logger from 'electron-log/main';
 import {Config, DockerConfig, Mode} from "./types/types";
@@ -44,17 +44,19 @@ const changeMode = async (mode: Mode) => {
     updateTrayMenu(false);
 
     if (mode === 'none' || mode === 'idle') {
-        await runCommand(`docker stop ${dockerConfig.containerName}`);
+        waitPromise = waitPromise.then(_ => runCommand(`docker stop ${dockerConfig.containerName}`, 30 * 1000));
+        logger.info('changeMode-start', await waitPromise);
         config.idleEnabled = false;
     } else if (mode === 'always') {
-        await runCommand(`docker start ${dockerConfig.containerName}`);
+        waitPromise = waitPromise.then(_ => runCommand(`docker start ${dockerConfig.containerName}`, 30 * 1000));
+        logger.info('changeMode-start', await waitPromise);
         config.idleEnabled = false;
     }
     saveConfig({...config, mode});
     mainWindow.webContents.send('updateConfig', config);
 
     isChangingMode = false;
-    tray.setToolTip('Save the Choi');
+    tray.setToolTip(`Save the Choi (${mode})`);
     updateTrayMenu(true);
 }
 
@@ -154,6 +156,7 @@ function createTray() {
     });
 }
 
+let waitPromise: Promise<any> = Promise.resolve();
 let lastTime = new Date();
 setInterval(async _ => {
     if (config.status === "initialized") {
@@ -162,12 +165,15 @@ setInterval(async _ => {
         if (config.idleTime > config.idleThreshold) {
             if (!config.idleEnabled && config.mode === 'idle') {
                 config.idleEnabled = true;
-                logger.info(await runCommand(`docker start ${dockerConfig.containerName}`));
+                waitPromise = waitPromise.then(_ => runCommand(`docker start ${dockerConfig.containerName}`, 30 * 1000));
+                logger.info('idle-start', await waitPromise);
             }
         } else {
             if (config.idleEnabled) {
                 config.idleEnabled = false;
-                logger.info(await runCommand(`docker stop ${dockerConfig.containerName}`));
+                await waitPromise;
+                waitPromise = waitPromise.then(_ => runCommand(`docker stop ${dockerConfig.containerName}`, 30 * 1000));
+                logger.info('idle-stop', await waitPromise);
             }
         }
         if (config.mode === 'always' || (config.mode === 'idle' && config.idleEnabled)) {
@@ -178,10 +184,14 @@ setInterval(async _ => {
         }
     }
     lastTime = new Date();
-}, 300);
+}, 1000);
 setInterval(_ => {
     saveConfig(config);
 }, 1000 * 15);
+
+process.on('uncaughtException', function (error) {
+    logger.error('uncaughtException', error);
+});
 
 /** Launch **/
 const gotTheLock = app.requestSingleInstanceLock();
@@ -199,12 +209,14 @@ if (!gotTheLock) {
     app.whenReady().then(async _ => {
         createWindow();
         createTray();
-
+        tray.setToolTip('Save the Choi');
         updateTrayMenu(false);
-        tray.setToolTip('Save the Choi (Waiting for Docker)');
-        logger.info('Waiting for Docker');
-        logger.info(await runCommand(`& \\"$env:ProgramFiles\\Docker\\Docker\\Docker Desktop.exe\\"`));
-        await waitForDocker();
+        if (await isDockerNotRunning()) {
+            tray.setToolTip('Save the Choi (Waiting for Docker)');
+            logger.info('Waiting for Docker');
+            logger.info(await runCommand(`& \\"$env:ProgramFiles\\Docker\\Docker\\Docker Desktop.exe\\"`));
+            await waitForDocker();
+        }
         if (config.status === 'installation') {
             logger.info('Status: Installation');
             updateTrayMenu(false);
@@ -218,6 +230,7 @@ if (!gotTheLock) {
                 await runCommand(`docker create --gpus all --privileged -it --entrypoint "/opt/run.sh" --name ${dockerConfig.containerName} ${dockerConfig.imageName}`);
             }
             await runCommand(dockerConfig.containerCreationCommand);
+            tray.setToolTip('Save the Choi (Waiting for pop-up confirmation)');
             mainWindow.show();
             mainWindow.focus();
         } else {

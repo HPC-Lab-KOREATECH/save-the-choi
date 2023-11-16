@@ -16,7 +16,7 @@
 
 ### Windows
 
-#### powershell.exe
+#### Install
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://l.hpclab.kr/stcinstallwindows')) 
 ```
@@ -24,7 +24,17 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 
 권한 등의 오류로 실행이 되지 않는 경우, powershell.exe를 통한 설치를 권장합니다.
 
-설치 시, 시작 프로그램으로 `Save the Choi`가 자동으로 등록됩니다. (실행 프로그램 경로: `%APPDATA%\save-the-choi\stc.exe`)
+설치 시, 시작 프로그램과 시작 메뉴에 `Save the Choi`가 자동으로 등록됩니다. (실행 프로그램 경로: `%APPDATA%\save-the-choi\stc.exe`)
+
+#### Update (이미 설치한 경우, 버전 업데이트)
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://l.hpclab.kr/stcupdatewindows')) 
+```
+**관리자 권한으로 파워쉘(powershell)를 실행한 후, 위의 명령을 복사하여 실행합니다.** (본 설치 스크립트는 `scripts/windows/update.ps1`의 내용과 동일합니다)
+
+권한 등의 오류로 실행이 되지 않는 경우, powershell.exe를 통한 설치를 권장합니다.
+
+설치 시, 시작 프로그램과 시작 메뉴에 `Save the Choi`가 자동으로 등록됩니다. (실행 프로그램 경로: `%APPDATA%\save-the-choi\stc.exe`)
 
 ### Linux
 
